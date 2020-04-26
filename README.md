@@ -46,6 +46,10 @@ In files:
 
 8. Some algorithms use binary CGI file (short-path, Eulerian cycle/path and so on). If you want to run them, you need to compile GraphOffline util: https://github.com/UnickSoft/GraphOffline. And place it with name /cgi-bin/GraphCGI.exe or you can take precompiled file(Windows and Mac) from /cgi-bin/GraphOffline/
 
+# Docker
+
+docker-compose up
+
 # Additional steps to run from subdirectory:
 
 For example you place graphonline sources into http://localhost/graph/ directory.

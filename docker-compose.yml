@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+    web:
+        build: .
+        ports:
+        - 8080:80
+        volumes:
+        - .:/var/www/html
+        command: php -S 0.0.0.0:80
+    startup:
+        image: php:5.6-alpine
+        command: sh -c "sleep 2 && curl http://web:80/script/merge.php && curl http://web:80/cgi-bin/getPluginsList.php?reset"
+

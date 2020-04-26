@@ -46,6 +46,13 @@ function Application(document, window)
     this.backgroundPrintStyle  = new PrintBackgroundStyle(); 
     this.isBackgroundCommonStyleCustom  = false;
     this.renderPathWithEdges = false;
+
+    this.image = new Image();
+    this.image.src = 'https://avatars.mds.yandex.net/get-pdb/904462/7999063b-484c-43f4-8261-3a2afe06bf7f/s1200';
+    this.image.onload = function() {
+        this.imageDesiredWidth = 1000;
+        this.imageDesiredHeight = this.imageDesiredWidth / this.width * this.height;
+    };
 };
 
 // List of graph.
@@ -181,6 +188,8 @@ Application.prototype._redrawGraph = function()
     var backgroundDrawer = new BaseBackgroundDrawer(context);
     
     backgroundDrawer.Draw(this.backgroundCommonStyle, Math.max(this.canvas.width, this.GetRealWidth()), Math.max(this.canvas.height, this.GetRealHeight()), this.canvasPosition, this.canvasScale);
+    
+    context.drawImage(this.image, 0, 0, this.image.imageDesiredWidth, this.image.imageDesiredHeight);
     
     this.RedrawEdges(context);
     this.RedrawNodes(context);
