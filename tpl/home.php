@@ -134,6 +134,7 @@
           </ul>
         </div>
 
+        <input type="file" id="LoadImage" accept="image/*" onchange="handleLoadImage(this.files)">
 <!--
         <? if (!$wasVote && count($voteTopics) > 0): ?>
         <button type="button" class="btn btn-success" id="VoteButton"><span class="glyphicon glyphicon-thumbs-up"></span> <?= L('vote') ?></button>

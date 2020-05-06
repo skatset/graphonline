@@ -47,12 +47,7 @@ function Application(document, window)
     this.isBackgroundCommonStyleCustom  = false;
     this.renderPathWithEdges = false;
 
-    this.image = new Image();
-    this.image.src = 'https://avatars.mds.yandex.net/get-pdb/904462/7999063b-484c-43f4-8261-3a2afe06bf7f/s1200';
-    this.image.onload = function() {
-        this.imageDesiredWidth = 1000;
-        this.imageDesiredHeight = this.imageDesiredWidth / this.width * this.height;
-    };
+    this.image = undefined;
     
     this.edgePresets = [1, 3, 5, 7, 11, 42];
     this.maxEdgePresets = 6;
@@ -94,6 +89,18 @@ Application.prototype.redrawGraph = function()
         
         this.GraphTypeChanged();
     }
+}
+
+Application.prototype.LoadImageToCanvas = function(imageData)
+{
+    this.image = new Image();
+    this.image.src = imageData;
+    app = this;
+    this.image.onload = function() {
+        app.imageDesiredWidth = 1000;
+        app.imageDesiredHeight = app.imageDesiredWidth / this.width * this.height;
+        app.redrawGraph();
+    };
 }
 
 Application.prototype.redrawGraphTimer = function()
@@ -192,8 +199,10 @@ Application.prototype._redrawGraph = function()
     var backgroundDrawer = new BaseBackgroundDrawer(context);
     
     backgroundDrawer.Draw(this.backgroundCommonStyle, Math.max(this.canvas.width, this.GetRealWidth()), Math.max(this.canvas.height, this.GetRealHeight()), this.canvasPosition, this.canvasScale);
-    
-    context.drawImage(this.image, 0, 0, this.image.imageDesiredWidth, this.image.imageDesiredHeight);
+
+    if (this.image) {
+        context.drawImage(this.image, 0, 0, this.imageDesiredWidth, this.imageDesiredHeight);
+    }
     
     this.RedrawEdges(context);
     this.RedrawNodes(context);

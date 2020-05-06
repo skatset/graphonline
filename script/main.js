@@ -163,6 +163,18 @@ function handelImportGraph(files) {
     fileReader.readAsText(graphFileToLoad, "UTF-8");
 }
 
+function handleLoadImage(files) {
+    var graphFileToLoad = files[0];
+
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent){
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        application.LoadImageToCanvas(textFromFileLoaded);
+    };
+
+    fileReader.readAsDataURL(graphFileToLoad);
+}
+
 function postLoadPage()
 {
     application.userAction = userAction;
