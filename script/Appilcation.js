@@ -53,6 +53,10 @@ function Application(document, window)
         this.imageDesiredWidth = 1000;
         this.imageDesiredHeight = this.imageDesiredWidth / this.width * this.height;
     };
+    
+    this.edgePresets = [1, 3, 5, 7, 11, 42];
+    this.maxEdgePresets = 6;
+    this.selectionRect  = null;
 };
 
 // List of graph.
@@ -193,7 +197,9 @@ Application.prototype._redrawGraph = function()
     
     this.RedrawEdges(context);
     this.RedrawNodes(context);
-    
+    if (this.selectionRect != null)
+      this.RedrawSelectionRect(context);
+
     context.restore();
     
     return context;
@@ -399,6 +405,21 @@ Application.prototype.RedrawNodes = function(context, ForceCommonStyle, ForceSel
     }	
 }
 
+Application.prototype.RedrawSelectionRect = function(context)
+{
+  context.lineWidth    = 1.0 / this.canvasScale;
+      
+  context.strokeStyle  = this.edgeSelectedStyles[0].strokeStyle;	
+  context.setLineDash([6, 3]);
+  context.beginPath();
+  context.rect(this.selectionRect.left(), this.selectionRect.top(), 
+               this.selectionRect.size().x, this.selectionRect.size().y);
+  context.closePath();
+  context.stroke();
+    
+  context.setLineDash([]);
+}
+
 Application.prototype.updateMessage = function()
 {
 	this.document.getElementById('message').innerHTML = this.handler.GetMessage(); 
@@ -508,9 +529,9 @@ Application.prototype.CreateNewGraphEx = function(x, y, vertexEnume)
     return this.graph.AddNewVertex(new BaseVertex(x, y, vertexEnume));
 }
 
-Application.prototype.CreateNewArc = function(graph1, graph2, isDirect, weight, replaceIfExist)
+Application.prototype.CreateNewArc = function(graph1, graph2, isDirect, weight, replaceIfExist, upText)
 {
-	var edge = this.AddNewEdge(new BaseEdge(graph1, graph2, isDirect, weight), replaceIfExist);
+	var edge = this.AddNewEdge(new BaseEdge(graph1, graph2, isDirect, weight, upText), replaceIfExist);
 
     var edgeObject = this.graph.edges[edge];
     var hasPair    = this.graph.hasPair(edgeObject);
@@ -538,6 +559,9 @@ Application.prototype.CreateNewArc = function(graph1, graph2, isDirect, weight, 
             edgeObject.model.curvedValue = cruvled;
         }
     }
+    
+    if (edgeObject.useWeight)
+        this.UpdateEdgePresets(edgeObject.weight);
     
     return edge;
 }
@@ -1578,4 +1602,36 @@ Application.prototype.GetAvalibleCruvledValue = function(neighbourEdges, origina
 Application.prototype.GraphTypeChanged = function()
 {
     $("#CanvasMessage").text(this.graph.isMulti() ? g_GrapsIsMultiMessage : g_GrapsIsGeneralMessage);
+}
+
+Application.prototype.UpdateEdgePresets = function(weight)
+{
+    var oldPresets = this.edgePresets;
+    this.edgePresets = [1];
+    oldPresets.unshift(weight);
+    
+    for(var i = 0; i < oldPresets.length; i ++) 
+    {
+        var k = oldPresets[i];
+        if (!this.edgePresets.includes(k))
+            this.edgePresets.push(k);
+        
+        if (this.edgePresets.length >= this.maxEdgePresets)
+            break;
+    }
+}
+
+Application.prototype.GetEdgePresets = function()
+{
+    return this.edgePresets;
+}
+
+Application.prototype.SetSelectionRect = function(rect)
+{
+  this.selectionRect = rect;
+}
+
+Application.prototype.GetSelectionRect = function(rect)
+{
+  return this.selectionRect;
 }

@@ -10,7 +10,7 @@
 
         <script src="<?= Root('i/js/dev/jquery-ui.js')?>"></script>
 	    <script src="<?= Root('i/js/dev/jquery.feedback_me.js')?>"></script>
-        <script src="<?= Root("script/example.js?v=25")?>" ></script>
+        <script src="<?= Root("script/example.js?v=27")?>" ></script>
     </head>
 <!--
 <div class="pull-right">
@@ -163,7 +163,6 @@
     </div>
     </section>
 
-<? if (L('current_language') != "en"): ?>
     <section style="height:32px;text-align: center;" id="adv" class="hidden-phone">
     <a class="ProgresssBarLink" href="opensource" target="_blank">
     <div class="ProgressBar" style="height:32px">
@@ -172,18 +171,6 @@
     </div>
     </a>
     </section>
-<? endif; ?>
-
-<? if (L('current_language') == "en"): ?>
-    <section style="height:32px;text-align: center;" id="adv" class="hidden-phone">
-    <a class="ProgresssBarLink" href="/fr/">
-    <div class="ProgressBar" style="height:32px">
-        <div class="ProgressBarFill" style="width:0%;"></div>
-        <span class="ProgressBarText" style="top:-28px"><p><?= L('french_add')?></p></span>
-    </div>
-    </a>
-    </section>
-<? endif; ?>
 
 <? if (L('current_language') == "ru" && false): ?>
 <!--
@@ -228,17 +215,16 @@
     <div id="addEdge">
 		<form>
 		<fieldset>
-              <div>
+              <div id="EdgeWeightControls">
 			  <label id="WeightLabel"><?= L('edge_weight')?>&nbsp; </label> <input type="range" id="EdgeWeightSlider" min="0" max="29" value="0" oninput="document.getElementById('EdgeWeight').value = (this.value > 0 ? this.value : '<?= L('default_weight')?>');" onchange="document.getElementById('EdgeWeight').value = (this.value > 0 ? this.value : '<?= L('default_weight')?>');"> &nbsp; &nbsp;<input type="text" name="edgeWeight" value="<?= L('default_weight')?>" id="EdgeWeight" class="inputBox">
               </div>
-			  <div>
+			  <div id="EdgesPresets">
   			  <span onClick="document.getElementById('EdgeWeight').value='<?= L('default_weight')?>'; document.getElementById('EdgeWeightSlider').value=0;" style="cursor: pointer" class="defaultWeigth"><?= L('default_weight')?></span>
   			  <span onClick="document.getElementById('EdgeWeight').value='1'; document.getElementById('EdgeWeightSlider').value=1;" style="cursor: pointer"  class="defaultWeigth">1</span>
-  			  <span onClick="document.getElementById('EdgeWeight').value='3'; document.getElementById('EdgeWeightSlider').value=3;" style="cursor: pointer"  class="defaultWeigth">3</span>
-  			  <span onClick="document.getElementById('EdgeWeight').value='5'; document.getElementById('EdgeWeightSlider').value=5;" style="cursor: pointer"  class="defaultWeigth">5</span>
-			  <span onClick="document.getElementById('EdgeWeight').value='7'; document.getElementById('EdgeWeightSlider').value=7;" style="cursor: pointer"  class="defaultWeigth">7</span>
-			  <span onClick="document.getElementById('EdgeWeight').value='11'; document.getElementById('EdgeWeightSlider').value=11;" style="cursor: pointer"  class="defaultWeigth">11</span>
 			  </div>
+              <div id="EdgeLabelControls">
+			  <label id="EdgeLabel"><?= L('text_above_edge')?></label>&nbsp;&nbsp;<input type="text" name="edgeLable" value="" id="EdgeLable" class="inputBox">
+              </div>
               <div id="NewEdgeAction">
                 <div class="InlineStyle PaddingRight">
                   <input class="form-check-input" type="radio" name="NewEdgeActionValue" id="RadiosReplaceEdge" value="replace" checked>
@@ -576,6 +562,13 @@
         
     <p id="graphIsMultiMessage" class="translation"><?= L('graph_is_multi_message')?></p>
     <p id="graphIsGeneralMessage" class="translation"><?= L('graph_is_general_message')?></p>
+    <p id="defaultWeightPreset" class="translation"><?= L('default_weight')?></p>
+        
+    <p id="selectGroupMac" class="translation"><?= L('select_groupe_mac')?></p>
+    <p id="selectGroupWin" class="translation"><?= L('select_groupe_win')?></p>
+    <p id="dragSelectedGroup" class="translation"><?= L('drag_select_group')?></p>
+    <p id="copySelectedGroup" class="translation"><?= L('copy_select_group')?></p>
+    <p id="removeSelectedGroup" class="translation"><?= L('remove_select_group')?></p>
         
 </section>
 <!--
